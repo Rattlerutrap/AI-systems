@@ -1,7 +1,9 @@
 import numpy as np
 import random
+import math
 import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import roc_curve, roc_auc_score
 
 def plotPrint(X_neg, X_pos):
     plt.figure(figsize=(12, 5))
@@ -44,7 +46,7 @@ for i in range(len(X_neg)):
 for i in range(len(X_pos)):
     dataSet.append([X_pos[i][0], X_pos[i][1], 1])
 
-plotPrint(X_neg, X_pos)
+# plotPrint(X_neg, X_pos)
 
 random.shuffle(dataSet)
 target = []
@@ -55,18 +57,33 @@ for i in dataSet:
 
 gnb = GaussianNB()
 
-x_train = dataSet[:80]
-y_train = target[:80]
+percent = 60
 
-x_test = dataSet[80:]
-y_test = target[80:]
+x_train = dataSet[:percent]
+y_train = target[:percent]
+
+x_test = dataSet[percent:]
+y_test = target[percent:]
 
 gnb.fit(x_train, y_train)
 
 y_pred = gnb.predict(x_test)
 
-# for i in range(len(y_pred)):
+y_pred_proba = gnb.predict_proba(x_test)[:, 1]
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba, pos_label=1)
+auc = roc_auc_score(y_test, y_pred_proba)
 
+print(fpr, tpr)
 
-print(f"total: {len(x_test)} correct: {(y_pred == y_test).sum()} accuracy: {(y_pred == y_test).sum()/len(x_test)}")
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, label=f'ROC (AUC = {auc:.3f})', linewidth=2)
+plt.plot([0, 1], [0, 1], 'k--', label='Случайный')
+plt.xlabel('FPR (False Positive Rate)')
+plt.ylabel('TPR (True Positive Rate)')
+plt.title('ROC-кривая')
+plt.legend()
+plt.grid(alpha=0.3)
+plt.show()
+
+print(f"total: {len(x_test)}, correct: {(y_pred == y_test).sum()}, accuracy: {(y_pred == y_test).sum()/len(x_test)}")
 
