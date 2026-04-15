@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 
 
@@ -30,4 +31,22 @@ for i in dataSet:
     target.append(i[-1])
     i.pop()
 
-print(target)
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.scatter(X_neg[:, 0], X_neg[:, 1], color='red', alpha=0.7)
+plt.xlabel('X1')
+plt.ylabel('X2')
+plt.title('Класс -1 (20 точек)')
+plt.grid(True, alpha=0.3)
+
+plt.subplot(1, 2, 2)
+plt.scatter(X_pos[:, 0], X_pos[:, 1], color='blue', alpha=0.7)
+plt.xlabel('X1')
+plt.ylabel('X2')
+plt.title('Класс 1 (80 точек)')
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
