@@ -3,7 +3,25 @@ import random
 import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
 
+def plotPrint(X_neg, X_pos):
+    plt.figure(figsize=(12, 5))
 
+    plt.subplot(1, 2, 1)
+    plt.scatter(X_neg[:, 0], X_neg[:, 1], color='red', alpha=0.7)
+    plt.xlabel('X1')
+    plt.ylabel('X2')
+    plt.title('Класс -1 (20 точек)')
+    plt.grid(True, alpha=0.3)
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(X_pos[:, 0], X_pos[:, 1], color='blue', alpha=0.7)
+    plt.xlabel('X1')
+    plt.ylabel('X2')
+    plt.title('Класс 1 (80 точек)')
+    plt.grid(True, alpha=0.3)
+
+    plt.tight_layout()
+    plt.show()
 
 n_neg = 20
 mean_neg = [10, 14]
@@ -26,27 +44,9 @@ for i in range(len(X_neg)):
 for i in range(len(X_pos)):
     dataSet.append([X_pos[i][0], X_pos[i][1], 1])
 
-plt.figure(figsize=(12, 5))
-
-plt.subplot(1, 2, 1)
-plt.scatter(X_neg[:, 0], X_neg[:, 1], color='red', alpha=0.7)
-plt.xlabel('X1')
-plt.ylabel('X2')
-plt.title('Класс -1 (20 точек)')
-plt.grid(True, alpha=0.3)
-
-plt.subplot(1, 2, 2)
-plt.scatter(X_pos[:, 0], X_pos[:, 1], color='blue', alpha=0.7)
-plt.xlabel('X1')
-plt.ylabel('X2')
-plt.title('Класс 1 (80 точек)')
-plt.grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.show()
+plotPrint(X_neg, X_pos)
 
 random.shuffle(dataSet)
-print(dataSet)
 target = []
 for i in dataSet:
     target.append(i[-1])
@@ -55,7 +55,18 @@ for i in dataSet:
 
 gnb = GaussianNB()
 
-gnb.fit(dataSet, target)
-y_pred = gnb.predict(dataSet)
+x_train = dataSet[:80]
+y_train = target[:80]
 
-print(f"total: {len(dataSet)} correct: {(y_pred == target).sum()} accuracy: {(y_pred == target).sum()/len(dataSet)}")
+x_test = dataSet[80:]
+y_test = target[80:]
+
+gnb.fit(x_train, y_train)
+
+y_pred = gnb.predict(x_test)
+
+# for i in range(len(y_pred)):
+
+
+print(f"total: {len(x_test)} correct: {(y_pred == y_test).sum()} accuracy: {(y_pred == y_test).sum()/len(x_test)}")
+
