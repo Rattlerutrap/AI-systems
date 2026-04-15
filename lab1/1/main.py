@@ -31,10 +31,13 @@ with open('tic_tac_toe.txt', 'r', encoding='utf-8') as file:
 
 gnb = GaussianNB() 
 
-# for i in range(len(data)):
-gnb.fit(data, target)
-y_pred = gnb.predict(data) 
+for i in range(1, len(data)):
+    x_train = data[:i]
+    y_train = target[:i]
 
- 
-y_pred = gnb.predict(data) 
-print(f"Total: {len(data)}, Correct: {(y_pred == target).sum()}, Accuracy: {(y_pred == target).sum()/len(data)}")
+    x_test = data[i:]
+    y_test = target[i:]
+
+    gnb.fit(x_train, y_train)
+    y_pred = gnb.predict(x_test) 
+    print(f"Train size: {len(x_train)} Test size: {len(y_test)}, Correct: {(y_pred == y_test).sum()}, Accuracy: {(y_pred == y_test).sum()/len(y_test)}")
