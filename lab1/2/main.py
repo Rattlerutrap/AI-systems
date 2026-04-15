@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import matplotlib.pyplot as plt
+from sklearn.naive_bayes import GaussianNB
 
 
 
@@ -20,16 +21,10 @@ X_pos = np.random.normal(mean_pos, std_pos, size=(n_pos, 2))
 dataSet = []
 
 for i in range(len(X_neg)):
-    dataSet.append([X_neg[i][0], X_neg[1], -1])
+    dataSet.append([X_neg[i][0], X_neg[i][1], -1])
 
 for i in range(len(X_pos)):
-    dataSet.append([X_pos[i][0], X_pos[1], 1])
-
-random.shuffle(dataSet)
-target = []
-for i in dataSet:
-    target.append(i[-1])
-    i.pop()
+    dataSet.append([X_pos[i][0], X_pos[i][1], 1])
 
 plt.figure(figsize=(12, 5))
 
@@ -50,3 +45,17 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
+random.shuffle(dataSet)
+print(dataSet)
+target = []
+for i in dataSet:
+    target.append(i[-1])
+    i.pop()
+
+
+gnb = GaussianNB()
+
+gnb.fit(dataSet, target)
+y_pred = gnb.predict(dataSet)
+
+print(f"total: {len(dataSet)} correct: {(y_pred == target).sum()} accuracy: {(y_pred == target).sum()/len(dataSet)}")
