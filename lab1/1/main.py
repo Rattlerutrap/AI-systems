@@ -68,6 +68,7 @@ random.shuffle(data)
 target = []
 for i in data:
     target.append(i[-1])
+    i.pop()
 
 
 for i in range(1, len(data)):
