@@ -3,7 +3,7 @@ import random
 import math
 import matplotlib.pyplot as plt
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import roc_curve, roc_auc_score
+from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve
 
 def plotPrint(X_neg, X_pos):
     plt.figure(figsize=(12, 5))
@@ -73,8 +73,6 @@ y_pred_proba = gnb.predict_proba(x_test)[:, 1]
 fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba, pos_label=1)
 auc = roc_auc_score(y_test, y_pred_proba)
 
-print(fpr, tpr)
-
 plt.figure(figsize=(8, 6))
 plt.plot(fpr, tpr, label=f'ROC (AUC = {auc:.3f})', linewidth=2)
 plt.plot([0, 1], [0, 1], 'k--', label='Случайный')
@@ -83,6 +81,30 @@ plt.ylabel('TPR (True Positive Rate)')
 plt.title('ROC-кривая')
 plt.legend()
 plt.grid(alpha=0.3)
+plt.show()
+
+y_test = np.array(y_test)
+y_pred_proba = np.array(y_pred_proba)
+
+prec1, rec1, _ = precision_recall_curve(y_test, y_pred_proba, pos_label=1)
+
+prec_neg, rec_neg, _ = precision_recall_curve(1-y_test, 1-y_pred_proba, pos_label=1)
+
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(rec1, prec1)
+plt.title('PR-кривая для класса 1')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+
+plt.subplot(1, 2, 2)
+plt.plot(rec_neg, prec_neg)
+plt.title('PR-кривая для класса -1')
+plt.xlabel('Recall')
+plt.ylabel('Precision')
+
+plt.tight_layout()
 plt.show()
 
 print(f"total: {len(x_test)}, correct: {(y_pred == y_test).sum()}, accuracy: {(y_pred == y_test).sum()/len(x_test)}")
