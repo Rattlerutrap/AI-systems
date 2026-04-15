@@ -1,5 +1,3 @@
-from sklearn import datasets 
-import os
 from sklearn.naive_bayes import GaussianNB 
 
 def toNums(field):
@@ -32,8 +30,11 @@ with open('tic_tac_toe.txt', 'r', encoding='utf-8') as file:
 
 
 gnb = GaussianNB() 
- 
-gnb.fit(data, target) 
+
+# for i in range(len(data)):
+gnb.fit(data, target)
+y_pred = gnb.predict(data) 
+
  
 y_pred = gnb.predict(data) 
-print("Number of mislabeled points out of a total %d points : %d" % (len(data), (target != y_pred).sum())) 
+print(f"Total: {len(data)}, Correct: {(y_pred == target).sum()}, Accuracy: {(y_pred == target).sum()/len(data)}")
