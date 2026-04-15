@@ -1,15 +1,32 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
-# Устанавливаем seed для воспроизводимости
+
 np.random.seed(42)
 
-# Параметры
-mean = [10, 14]  # мат. ожидание для X1 и X2
-std = 3          # среднеквадратическое отклонение
 
-# Генерируем 100 точек с двумя признаками
+mean = [10, 14]  
+std = 3          
+
 data = np.random.normal(mean, std, size=(100, 2))
 
-# Выводим результат
 print(data)
-print(f"\nФорма массива: {data.shape}")
+
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.hist(data[:, 0], bins=10, alpha=0.7, color='blue', edgecolor='black')
+plt.xlabel('Значение')
+plt.ylabel('Частота')
+plt.title('Гистограмма X1')
+plt.grid(True, alpha=0.3)
+
+plt.subplot(1, 2, 2)
+plt.hist(data[:, 1], bins=10, alpha=0.7, color='green', edgecolor='black')
+plt.xlabel('Значение')
+plt.ylabel('Частота')
+plt.title('Гистограмма X2')
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
