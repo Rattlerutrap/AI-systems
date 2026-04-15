@@ -139,7 +139,6 @@ def Spam():
     plt.show()
 
 
-    gnb = GaussianNB() 
 
     trainToTestingRatio = []
     accuracy = []
@@ -173,6 +172,3 @@ def Spam():
     plt.title('Зависимость точности от соотношения обучающей и тестовой выборок')
     plt.grid(True)
     plt.show()
-    
-
-Spam()
