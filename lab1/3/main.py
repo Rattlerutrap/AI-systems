@@ -102,17 +102,25 @@ neighbors = []
 
 # printPlot1(neighbors, accuracies)
 
-cosineMetric = getAccuracyTroughMetric(10, 'cosine', data, target)
-manhattanMetric = getAccuracyTroughMetric(10, 'manhattan', data, target)
-euclideanMetric = getAccuracyTroughMetric(10, 'euclidean', data, target)
-ar = list(range(1, 11))
+# cosineMetric = getAccuracyTroughMetric(10, 'cosine', data, target)
+# manhattanMetric = getAccuracyTroughMetric(10, 'manhattan', data, target)
+# euclideanMetric = getAccuracyTroughMetric(10, 'euclidean', data, target)
+# ar = list(range(1, 11))
 
-plt.figure(figsize=(8, 6))
-plt.plot(ar, cosineMetric, label='Cosine', linewidth=2)
-plt.plot(ar, manhattanMetric, label='Manhattan', linewidth=2)
-plt.plot(ar, euclideanMetric, label='Euclidean', linewidth=2)
-plt.xlabel('№ эксперимента')
-plt.ylabel('Точность')
-plt.title('График зависимости точности классификации от метрики расстояния')
-plt.grid(alpha=0.3)
-plt.show()
+# plt.figure(figsize=(8, 6))
+# plt.plot(ar, cosineMetric, label='Cosine', linewidth=2)
+# plt.plot(ar, manhattanMetric, label='Manhattan', linewidth=2)
+# plt.plot(ar, euclideanMetric, label='Euclidean', linewidth=2)
+# plt.xlabel('№ эксперимента')
+# plt.ylabel('Точность')
+# plt.title('График зависимости точности классификации от метрики расстояния')
+# plt.grid(alpha=0.3)
+# plt.show()
+
+trainSize = 150
+
+neigh = KNeighborsClassifier(n_neighbors=5)
+neigh.fit(data, target)
+y_pred = neigh.predict([[1.516, 11.7, 1.01, 1.19, 72.59, 0.43, 11.44, 0.02, 0.1]])
+print(y_pred)
+    
