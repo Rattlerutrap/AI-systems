@@ -24,7 +24,7 @@ with open(FILENAME, "r", newline="") as file:
     for row in reader:
         data.append(list(map(float, row[1:])))
 
-random.seed(42)
+random.seed(41)
 
 random.shuffle(data)
 target = []
