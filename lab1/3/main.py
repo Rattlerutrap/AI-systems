@@ -1,6 +1,7 @@
 import csv
 import random
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import StandardScaler
 
 
 FILENAME = 'glass.csv'
@@ -19,6 +20,9 @@ for i in data:
     target.append(i[-1])
     i.pop()
     
+scaler = StandardScaler()
+data_normalized = scaler.fit_transform(data)
+
 
 
 
