@@ -62,58 +62,118 @@ def plot_decision_boundary(model, X, y, title, support_vectors=None):
     plt.grid(True, alpha=0.3)
     plt.show()
 
+def punktA():
+    data_train= utility.importTxt('svmdata_a.txt', 1, 1, '\t')
+    data_test = utility.importTxt('svmdata_a_test.txt', 1, 1, '\t')
 
-data_train= utility.importTxt('svmdata_a.txt', 1, 1, '\t')
+    X_train = np.array([[float(x[0]), float(x[1])] for x in data_train])
+    Y_train = np.array([1 if x[2] == 'green' else 0 for x in data_train])
 
-data_test = utility.importTxt('svmdata_a_test.txt', 1, 1, '\t')
+    X_test = np.array([[float(x[0]), float(x[1])] for x in data_test])
+    Y_test = np.array([1 if x[2] == 'green' else 0 for x in data_test])
 
-X_train = np.array([[float(x[0]), float(x[1])] for x in data_train])
-Y_train = np.array([1 if x[2] == 'green' else 0 for x in data_train])
+    svm_linear = SVC(kernel='linear', random_state=42)
+    svm_linear.fit(X_train, Y_train)
 
-X_test = np.array([[float(x[0]), float(x[1])] for x in data_test])
-Y_test = np.array([1 if x[2] == 'green' else 0 for x in data_test])
+    y_train_pred = svm_linear.predict(X_train)
+    y_test_pred = svm_linear.predict(X_test)
 
-svm_linear = SVC(kernel='linear', random_state=42)
-svm_linear.fit(X_train, Y_train)
+    train_accuracy = accuracy_score(Y_train, y_train_pred)
+    test_accuracy = accuracy_score(Y_test, y_test_pred)
 
-y_train_pred = svm_linear.predict(X_train)
-y_test_pred = svm_linear.predict(X_test)
+    print("=== SVM с линейным ядром ===")
+    print(f"Точность на обучающей выборке: {train_accuracy:.4f}")
+    print(f"Точность на тестовой выборке: {test_accuracy:.4f}")
+    print(f"Количество опорных векторов: {len(svm_linear.support_vectors_)}")
 
-train_accuracy = accuracy_score(Y_train, y_train_pred)
-test_accuracy = accuracy_score(Y_test, y_test_pred)
+    cm_train = confusion_matrix(Y_train, y_train_pred)
+    print("\nМатрица ошибок (обучение):")
+    print("          Предсказано")
+    print("          Класс 0  Класс 1")
+    print(f"Класс 0   {cm_train[0,0]:6d}  {cm_train[0,1]:6d}")
+    print(f"Класс 1   {cm_train[1,0]:6d}  {cm_train[1,1]:6d}")
 
-print("=== SVM с линейным ядром ===")
-print(f"Точность на обучающей выборке: {train_accuracy:.4f}")
-print(f"Точность на тестовой выборке: {test_accuracy:.4f}")
-print(f"Количество опорных векторов: {len(svm_linear.support_vectors_)}")
-
-cm_train = confusion_matrix(Y_train, y_train_pred)
-print("\nМатрица ошибок (обучение):")
-print("          Предсказано")
-print("          Класс 0  Класс 1")
-print(f"Класс 0   {cm_train[0,0]:6d}  {cm_train[0,1]:6d}")
-print(f"Класс 1   {cm_train[1,0]:6d}  {cm_train[1,1]:6d}")
-
-cm_test = confusion_matrix(Y_test, y_test_pred)
-print("\nМатрица ошибок (тест):")
-print("          Предсказано")
-print("          Класс 0  Класс 1")
-print(f"Класс 0   {cm_test[0,0]:6d}  {cm_test[0,1]:6d}")
-print(f"Класс 1   {cm_test[1,0]:6d}  {cm_test[1,1]:6d}")
+    cm_test = confusion_matrix(Y_test, y_test_pred)
+    print("\nМатрица ошибок (тест):")
+    print("          Предсказано")
+    print("          Класс 0  Класс 1")
+    print(f"Класс 0   {cm_test[0,0]:6d}  {cm_test[0,1]:6d}")
+    print(f"Класс 1   {cm_test[1,0]:6d}  {cm_test[1,1]:6d}")
 
 
-plot_decision_boundary(
-    svm_linear, 
-    X_train, 
-    Y_train, 
-    f'SVM с линейным ядром (обучение)\nОпорных векторов: {len(svm_linear.support_vectors_)}',
-    support_vectors=svm_linear.support_vectors_
-)
+    plot_decision_boundary(
+        svm_linear, 
+        X_train, 
+        Y_train, 
+        f'SVM с линейным ядром (обучение)\nОпорных векторов: {len(svm_linear.support_vectors_)}',
+        support_vectors=svm_linear.support_vectors_
+    )
 
-plot_decision_boundary(
-    svm_linear, 
-    X_test, 
-    Y_test, 
-    f'SVM с линейным ядром (тест)\nОпорных векторов: {len(svm_linear.support_vectors_)}',
-    support_vectors=svm_linear.support_vectors_
-)
+    plot_decision_boundary(
+        svm_linear, 
+        X_test, 
+        Y_test, 
+        f'SVM с линейным ядром (тест)\nОпорных векторов: {len(svm_linear.support_vectors_)}',
+        support_vectors=svm_linear.support_vectors_
+    )
+
+# punktA()
+
+def punktB():
+    data_train= utility.importTxt('svmdata_b.txt', 1, 1, '\t')
+    data_test = utility.importTxt('svmdata_b_test.txt', 1, 1, '\t')
+
+    X_train = np.array([[float(x[0]), float(x[1])] for x in data_train])
+    Y_train = np.array([1 if x[2] == 'green' else 0 for x in data_train])
+
+    X_test = np.array([[float(x[0]), float(x[1])] for x in data_test])
+    Y_test = np.array([1 if x[2] == 'green' else 0 for x in data_test])
+
+
+    #на 500 отсутствуют ошибки на обучающей выборке, но появляются на тестовой
+    svm_linear = SVC(kernel='linear', random_state=42, C=500)
+    svm_linear.fit(X_train, Y_train)
+
+    y_train_pred = svm_linear.predict(X_train)
+    y_test_pred = svm_linear.predict(X_test)
+
+    train_accuracy = accuracy_score(Y_train, y_train_pred)
+    test_accuracy = accuracy_score(Y_test, y_test_pred)
+
+    print("=== SVM с линейным ядром ===")
+    print(f"Точность на обучающей выборке: {train_accuracy:.4f}")
+    print(f"Точность на тестовой выборке: {test_accuracy:.4f}")
+    print(f"Количество опорных векторов: {len(svm_linear.support_vectors_)}")
+
+    cm_train = confusion_matrix(Y_train, y_train_pred)
+    print("\nМатрица ошибок (обучение):")
+    print("          Предсказано")
+    print("          Класс 0  Класс 1")
+    print(f"Класс 0   {cm_train[0,0]:6d}  {cm_train[0,1]:6d}")
+    print(f"Класс 1   {cm_train[1,0]:6d}  {cm_train[1,1]:6d}")
+
+    cm_test = confusion_matrix(Y_test, y_test_pred)
+    print("\nМатрица ошибок (тест):")
+    print("          Предсказано")
+    print("          Класс 0  Класс 1")
+    print(f"Класс 0   {cm_test[0,0]:6d}  {cm_test[0,1]:6d}")
+    print(f"Класс 1   {cm_test[1,0]:6d}  {cm_test[1,1]:6d}")
+
+
+    plot_decision_boundary(
+        svm_linear, 
+        X_train, 
+        Y_train, 
+        f'SVM с линейным ядром (обучение)\nОпорных векторов: {len(svm_linear.support_vectors_)}',
+        support_vectors=svm_linear.support_vectors_
+    )
+
+    plot_decision_boundary(
+        svm_linear, 
+        X_test, 
+        Y_test, 
+        f'SVM с линейным ядром (тест)\nОпорных векторов: {len(svm_linear.support_vectors_)}',
+        support_vectors=svm_linear.support_vectors_
+    )
+
+punktB()
