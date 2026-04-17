@@ -177,11 +177,14 @@ def punktB():
 
 # punktB()
 
-def makeSVMAnalysis(kernel, X_train, Y_train, X_test, Y_test, degree=1):
+def makeSVMAnalysis(kernel, X_train, Y_train, X_test, Y_test, degree=1, gamma=1):
     if (kernel == 'poly'):
-        svm = SVC(kernel=kernel, random_state=42, degree=degree)
-    else:
+        svm = SVC(kernel=kernel, random_state=42, degree=degree, gamma=gamma)
+    elif (kernel == 'linear'):
         svm = SVC(kernel=kernel, random_state=42)
+    else:
+        svm = SVC(kernel=kernel, random_state=42, gamma=gamma)
+
 
     svm.fit(X_train, Y_train)
     y_train_pred = svm.predict(X_train)
@@ -195,6 +198,8 @@ def makeSVMAnalysis(kernel, X_train, Y_train, X_test, Y_test, degree=1):
     else:
         kernelName = f'{kernel}'
     
+    if (gamma != 1):
+        kernelName += f'(gamma={gamma})'
 
     print(f"=== SVM с {kernelName} ядром ===")
     print(f"Точность на обучающей выборке: {train_accuracy:.4f}")
@@ -266,4 +271,32 @@ def punktD():
     makeSVMAnalysis('rbf', X_train, Y_train, X_test, Y_test)
     makeSVMAnalysis('sigmoid', X_train, Y_train, X_test, Y_test)
 
-punktD()
+# punktD()
+
+def punktE():
+    data_train= utility.importTxt('svmdata_e.txt', 1, 1, '\t')
+    data_test = utility.importTxt('svmdata_e_test.txt', 1, 1, '\t')
+
+    X_train = np.array([[float(x[0]), float(x[1])] for x in data_train])
+    Y_train = np.array([1 if x[2] == 'green' else 0 for x in data_train])
+
+    X_test = np.array([[float(x[0]), float(x[1])] for x in data_test])
+    Y_test = np.array([1 if x[2] == 'green' else 0 for x in data_test])
+
+
+    for i in range(5):
+        makeSVMAnalysis('poly', X_train, Y_train, X_test, Y_test, i+1, gamma=0.01)
+    makeSVMAnalysis('rbf', X_train, Y_train, X_test, Y_test, gamma=0.01)
+    makeSVMAnalysis('sigmoid', X_train, Y_train, X_test, Y_test, gamma=0.01)
+
+    for i in range(5):
+        makeSVMAnalysis('poly', X_train, Y_train, X_test, Y_test, i+1, gamma=1)
+    makeSVMAnalysis('rbf', X_train, Y_train, X_test, Y_test, gamma=1)
+    makeSVMAnalysis('sigmoid', X_train, Y_train, X_test, Y_test, gamma=1)
+
+    for i in range(5):
+        makeSVMAnalysis('poly', X_train, Y_train, X_test, Y_test, i+1, gamma=100)
+    makeSVMAnalysis('rbf', X_train, Y_train, X_test, Y_test, gamma=100)
+    makeSVMAnalysis('sigmoid', X_train, Y_train, X_test, Y_test, gamma=100)
+
+punktE()
