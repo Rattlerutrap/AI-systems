@@ -11,6 +11,9 @@ from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix, accuracy_score
 from matplotlib.colors import ListedColormap
 
+
+counter = 1
+
 def plot_decision_boundary(model, X, y, title, support_vectors=None):
     """
     Визуализация границ решений SVM
@@ -59,7 +62,11 @@ def plot_decision_boundary(model, X, y, title, support_vectors=None):
     plt.ylabel('Признак 2')
     plt.title(title)
     plt.grid(True, alpha=0.3)
-    plt.show()
+    global counter
+    plt.savefig(f'a{counter}')
+    counter += 1
+    # plt.show()
+    
 
 def punktA():
     data_train= utility.importTxt('svmdata_a.txt', 1, 1, '\t')
@@ -116,7 +123,7 @@ def punktA():
         support_vectors=svm_linear.support_vectors_
     )
 
-# punktA()
+punktA()
 
 def punktB():
     data_train= utility.importTxt('svmdata_b.txt', 1, 1, '\t')
@@ -130,7 +137,7 @@ def punktB():
 
 
     #на 500 отсутствуют ошибки на обучающей выборке, но появляются на тестовой
-    svm_linear = SVC(kernel='linear', random_state=42, C=500)
+    svm_linear = SVC(kernel='linear', random_state=42)
     svm_linear.fit(X_train, Y_train)
 
     y_train_pred = svm_linear.predict(X_train)
@@ -202,16 +209,16 @@ def makeSVMAnalysis(kernel, X_train, Y_train, X_test, Y_test, degree=1, gamma=1)
         kernelName += f'(gamma={gamma})'
 
     print(f"=== SVM с {kernelName} ядром ===")
-    print(f"Точность на обучающей выборке: {train_accuracy:.4f}")
+    # print(f"Точность на обучающей выборке: {train_accuracy:.4f}")
     print(f"Точность на тестовой выборке: {test_accuracy:.4f}")
     print(f"Количество опорных векторов: {len(svm.support_vectors_)}")
 
-    cm_train = confusion_matrix(Y_train, y_train_pred)
-    print("\nМатрица ошибок (обучение):")
-    print("          Предсказано")
-    print("          Класс 0  Класс 1")
-    print(f"Класс 0   {cm_train[0,0]:6d}  {cm_train[0,1]:6d}")
-    print(f"Класс 1   {cm_train[1,0]:6d}  {cm_train[1,1]:6d}")
+    # cm_train = confusion_matrix(Y_train, y_train_pred)
+    # print("\nМатрица ошибок (обучение):")
+    # print("          Предсказано")
+    # print("          Класс 0  Класс 1")
+    # print(f"Класс 0   {cm_train[0,0]:6d}  {cm_train[0,1]:6d}")
+    # print(f"Класс 1   {cm_train[1,0]:6d}  {cm_train[1,1]:6d}")
 
     cm_test = confusion_matrix(Y_test, y_test_pred)
     print("\nМатрица ошибок (тест):")
@@ -221,13 +228,13 @@ def makeSVMAnalysis(kernel, X_train, Y_train, X_test, Y_test, degree=1, gamma=1)
     print(f"Класс 1   {cm_test[1,0]:6d}  {cm_test[1,1]:6d}")
 
 
-    plot_decision_boundary(
-        svm, 
-        X_train, 
-        Y_train, 
-        f'SVM с {kernelName} ядром (обучение)\nОпорных векторов: {len(svm.support_vectors_)}',
-        support_vectors=svm.support_vectors_
-    )
+    # plot_decision_boundary(
+    #     svm, 
+    #     X_train, 
+    #     Y_train, 
+    #     f'SVM с {kernelName} ядром (обучение)\nОпорных векторов: {len(svm.support_vectors_)}',
+    #     support_vectors=svm.support_vectors_
+    # )
 
     plot_decision_boundary(
         svm, 
@@ -299,4 +306,4 @@ def punktE():
     makeSVMAnalysis('rbf', X_train, Y_train, X_test, Y_test, gamma=100)
     makeSVMAnalysis('sigmoid', X_train, Y_train, X_test, Y_test, gamma=100)
 
-punktE()
+# punktE()
