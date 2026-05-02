@@ -12,7 +12,7 @@ def printPlot1(neighbors, accuracies):
     plt.ylabel('Точность')
     plt.title('График зависимости ошибки классификации от количества ближайших соседей')
     plt.grid(alpha=0.3)
-    plt.show()
+    plt.savefig('plot1.png') 
 
 def getAccuracyTroughMetric(i, metric, data, target):
     trainSize = 150
@@ -84,6 +84,7 @@ with open(FILENAME, "r", newline="") as file:
     for row in reader:
         data.append(list(map(float, row[1:])))
 
+random.seed(0)
 
 random.shuffle(data)
 target = []
@@ -93,34 +94,35 @@ for i in data:
     
 scaler = StandardScaler()
 data_normalized = scaler.fit_transform(data)
+data_normalized = data_normalized.tolist()
 
 
 accuracies = []
 neighbors = []
 
-# accuracies, neighbors = getDifferentNeighbors(30, data, target)
+accuracies, neighbors = getDifferentNeighbors(30, data_normalized, target)
 
-# printPlot1(neighbors, accuracies)
+printPlot1(neighbors, accuracies)
 
-# cosineMetric = getAccuracyTroughMetric(10, 'cosine', data, target)
-# manhattanMetric = getAccuracyTroughMetric(10, 'manhattan', data, target)
-# euclideanMetric = getAccuracyTroughMetric(10, 'euclidean', data, target)
-# ar = list(range(1, 11))
+cosineMetric = getAccuracyTroughMetric(10, 'cosine', data_normalized, target)
+manhattanMetric = getAccuracyTroughMetric(10, 'manhattan', data_normalized, target)
+euclideanMetric = getAccuracyTroughMetric(10, 'euclidean', data_normalized, target)
+ar = list(range(1, 11))
 
-# plt.figure(figsize=(8, 6))
-# plt.plot(ar, cosineMetric, label='Cosine', linewidth=2)
-# plt.plot(ar, manhattanMetric, label='Manhattan', linewidth=2)
-# plt.plot(ar, euclideanMetric, label='Euclidean', linewidth=2)
-# plt.xlabel('№ эксперимента')
-# plt.ylabel('Точность')
-# plt.title('График зависимости точности классификации от метрики расстояния')
-# plt.grid(alpha=0.3)
-# plt.show()
+plt.figure(figsize=(8, 6))
+plt.plot(ar, cosineMetric, label='Cosine', linewidth=2)
+plt.plot(ar, manhattanMetric, label='Manhattan', linewidth=2)
+plt.plot(ar, euclideanMetric, label='Euclidean', linewidth=2)
+plt.xlabel('№ эксперимента')
+plt.ylabel('Точность')
+plt.title('График зависимости точности классификации от метрики расстояния')
+plt.grid(alpha=0.3)
+plt.savefig('plot2.png') 
 
 trainSize = 150
 
 neigh = KNeighborsClassifier(n_neighbors=5)
-neigh.fit(data, target)
-y_pred = neigh.predict([[1.516, 11.7, 1.01, 1.19, 72.59, 0.43, 11.44, 0.02, 0.1]])
+neigh.fit(data_normalized, target)
+y_pred = neigh.predict(scaler.transform([[1.516, 11.7, 1.01, 1.19, 72.59, 0.43, 11.44, 0.02, 0.1]]))
 print(y_pred)
     
