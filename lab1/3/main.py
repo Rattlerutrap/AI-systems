@@ -117,9 +117,8 @@ plt.xlabel('№ эксперимента')
 plt.ylabel('Точность')
 plt.title('График зависимости точности классификации от метрики расстояния')
 plt.grid(alpha=0.3)
+plt.legend()
 plt.savefig('plot2.png') 
-
-trainSize = 150
 
 neigh = KNeighborsClassifier(n_neighbors=5)
 neigh.fit(data_normalized, target)

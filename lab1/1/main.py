@@ -125,7 +125,7 @@ def Spam():
         target.append(i[-1])
         i.pop()
 
-    for i in range(1, len(data)):
+    for i in range(1, len(data) - 10):
         x_train = data[:i]
         y_train = target[:i]
 
@@ -137,7 +137,7 @@ def Spam():
 
         trainToTestingRatio.append(len(x_train)/len(x_test))
         accuracy.append((y_pred == y_test).sum()/len(y_test))
-        print(f"Train size: {len(x_train)} Test size: {len(y_test)}, Correct: {(y_pred == y_test).sum()}, Accuracy: {(y_pred == y_test).sum()/len(y_test)}")
+        # print(f"Train size: {len(x_train)} Test size: {len(y_test)}, Correct: {(y_pred == y_test).sum()}, Accuracy: {(y_pred == y_test).sum()/len(y_test)}")
 
     plt.figure(figsize=(10, 6))
     plt.plot(trainToTestingRatio, accuracy, 'b-', linewidth=2)
@@ -145,4 +145,6 @@ def Spam():
     plt.ylabel('Accuracy')
     plt.title('Зависимость точности от соотношения обучающей и тестовой выборок')
     plt.grid(True)
-    plt.show()
+    plt.savefig('plot.png', dpi=300, bbox_inches='tight') 
+
+Spam()
