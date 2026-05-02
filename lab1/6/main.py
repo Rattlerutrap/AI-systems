@@ -1,7 +1,3 @@
-print("\n" + "="*80)
-print("ПУНКТ 6: Bank Scoring")
-print("="*80)
-
 import sys
 import os
 

@@ -36,32 +36,6 @@ def TicTacToe():
     trainToTestingRatio = []
     accuracy = []
 
-    for i in range(1, len(data)):
-        x_train = data[:i]
-        y_train = target[:i]
-
-        x_test = data[i:]
-        y_test = target[i:]
-
-        gnb.fit(x_train, y_train)
-        y_pred = gnb.predict(x_test) 
-
-        trainToTestingRatio.append(len(x_train)/len(x_test))
-        accuracy.append((y_pred == y_test).sum()/len(y_test))
-
-
-    plt.figure(figsize=(10, 6))
-    plt.plot(trainToTestingRatio, accuracy, 'b-', linewidth=2)
-    plt.xlabel('Train/Test Ratio')
-    plt.ylabel('Accuracy')
-    plt.title('Зависимость точности от соотношения обучающей и тестовой выборок')
-    plt.grid(True)
-    plt.show()
-
-
-    trainToTestingRatio = []
-    accuracy = []
-
     for i in range(len(data)):
         data[i].append(target[i])
     random.shuffle(data)
@@ -71,7 +45,7 @@ def TicTacToe():
         i.pop()
 
 
-    for i in range(1, len(data)):
+    for i in range(1, len(data) - 191):
         x_train = data[:i]
         y_train = target[:i]
 
@@ -83,7 +57,7 @@ def TicTacToe():
 
         trainToTestingRatio.append(len(x_train)/len(x_test))
         accuracy.append((y_pred == y_test).sum()/len(y_test))
-        print(f"Train size: {len(x_train)} Test size: {len(y_test)}, Correct: {(y_pred == y_test).sum()}, Accuracy: {(y_pred == y_test).sum()/len(y_test)}")
+        # print(f"Train size: {len(x_train)} Test size: {len(y_test)}, Correct: {(y_pred == y_test).sum()}, Accuracy: {(y_pred == y_test).sum()/len(y_test)}")
 
 
     plt.figure(figsize=(10, 6))
@@ -92,7 +66,7 @@ def TicTacToe():
     plt.ylabel('Accuracy')
     plt.title('Зависимость точности от соотношения обучающей и тестовой выборок')
     plt.grid(True)
-    plt.show()
+    plt.savefig('plot1.png', dpi=300, bbox_inches='tight') 
     
 def spamToNumRes(res):
     return 1 if res == '"nonspam"\n' else 0;
@@ -125,7 +99,7 @@ def Spam():
         target.append(i[-1])
         i.pop()
 
-    for i in range(1, len(data) - 10):
+    for i in range(1, len(data) - 901):
         x_train = data[:i]
         y_train = target[:i]
 
@@ -145,6 +119,8 @@ def Spam():
     plt.ylabel('Accuracy')
     plt.title('Зависимость точности от соотношения обучающей и тестовой выборок')
     plt.grid(True)
-    plt.savefig('plot.png', dpi=300, bbox_inches='tight') 
+    plt.savefig('plot2.png', dpi=300, bbox_inches='tight') 
 
+
+TicTacToe()
 Spam()
