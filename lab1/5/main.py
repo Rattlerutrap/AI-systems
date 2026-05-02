@@ -135,3 +135,59 @@ def punktA():
 
 def punktB():
     data = utility.importCSV('spam7.csv', 1)
+    random.shuffle(data)
+
+    x = []
+    y = []
+    for i in data:
+        x.append(i[:-1])
+        if i[-1] == 'n':
+            y.append(0)
+        else:
+            y.append(1)
+
+    x_train = x[:3680]
+    y_train = y[:3680]
+
+    x_test = x[3680:]
+    y_test = y[3680:]
+
+    clf_base = DecisionTreeClassifier(random_state=42, max_depth=5, criterion='entropy')
+    clf_base.fit(x_train, y_train)
+
+    y_pred_base = clf_base.predict(x_test)
+    acc_base = accuracy_score(y_test, y_pred_base)
+    print(f"Точность базового дерева: {acc_base:.4f}")
+
+    plt.figure(figsize=(40, 25))
+    plot_tree(clf_base, 
+            feature_names=["crl.tot","dollar","bang","money","n000","make"], 
+            class_names=['no', 'yes'], 
+            filled=True, 
+            fontsize=7,
+            proportion=True,
+            rounded=True)
+    plt.title("Полное дерево решений для Glass Dataset (без обрезки)", fontsize=16)
+    plt.tight_layout()
+    plt.savefig('decision_treeBentropy.png', dpi=300, bbox_inches='tight')
+
+    clf_base = DecisionTreeClassifier(random_state=42, max_depth=5, criterion='gini')
+    clf_base.fit(x_train, y_train)
+
+    y_pred_base = clf_base.predict(x_test)
+    acc_base = accuracy_score(y_test, y_pred_base)
+    print(f"Точность базового дерева: {acc_base:.4f}")
+
+    plt.figure(figsize=(40, 25))
+    plot_tree(clf_base, 
+            feature_names=["crl.tot","dollar","bang","money","n000","make"], 
+            class_names=['no', 'yes'], 
+            filled=True, 
+            fontsize=7,
+            proportion=True,
+            rounded=True)
+    plt.title("Полное дерево решений для Glass Dataset (без обрезки)", fontsize=16)
+    plt.tight_layout()
+    plt.savefig('decision_treeBgini.png', dpi=300, bbox_inches='tight') 
+
+punktB()
