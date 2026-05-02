@@ -157,7 +157,7 @@ def punktB():
 
     y_pred_base = clf_base.predict(x_test)
     acc_base = accuracy_score(y_test, y_pred_base)
-    print(f"Точность базового дерева: {acc_base:.4f}")
+    print(f"Точность entropy дерева: {acc_base:.4f}")
 
     plt.figure(figsize=(40, 25))
     plot_tree(clf_base, 
@@ -176,7 +176,7 @@ def punktB():
 
     y_pred_base = clf_base.predict(x_test)
     acc_base = accuracy_score(y_test, y_pred_base)
-    print(f"Точность базового дерева: {acc_base:.4f}")
+    print(f"Точность gini дерева: {acc_base:.4f}")
 
     plt.figure(figsize=(40, 25))
     plot_tree(clf_base, 

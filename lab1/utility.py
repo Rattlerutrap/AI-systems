@@ -1,9 +1,9 @@
 import csv
 
-def importCSV(filename, linesTobeIgnored = 0, columnsToBeIgnored = 0):
+def importCSV(filename, linesTobeIgnored = 0, columnsToBeIgnored = 0, delimiter = ','):
     result = []
     with open(filename, "r", newline="") as file:
-        reader = csv.reader(file)
+        reader = csv.reader(file, delimiter=delimiter)
         for i in range(linesTobeIgnored):
             next(reader)
         for row in reader:
