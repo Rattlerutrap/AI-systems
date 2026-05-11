@@ -12,21 +12,23 @@ import sys
 sys.path.append(r'F:\Системы ИИ')
 import utility
 
-class SingleNeuron(nn.Module):
-    def __init__(self, input_dim=2, activation='sigmoid'):
-        super(SingleNeuron, self).__init__()
-        self.linear = nn.Linear(input_dim, 1)
+class MultiLayerNet(nn.Module):
+    def __init__(self, input_dim=2, hidden_dim=4, output_dim=1, activation='relu'):
+        super(MultiLayerNet, self).__init__()
         
-        if activation == 'sigmoid':
-            self.activation = nn.Sigmoid()
-        elif activation == 'tanh':
-            self.activation = nn.Tanh()
-        elif activation == 'relu':
-            self.activation = nn.ReLU()
-            
+        # Скрытый слой (2 → 4 нейрона)
+        self.hidden = nn.Linear(input_dim, hidden_dim)
+        self.activation = nn.ReLU()
+        
+        # Выходной слой (4 → 1 нейрон)
+        self.output = nn.Linear(hidden_dim, output_dim)
+        self.sigmoid = nn.Sigmoid()
+        
     def forward(self, x):
-        x = self.linear(x)
-        x = self.activation(x)
+        x = self.hidden(x)      # 2 входа → 4 нейрона
+        x = self.activation(x)  # функция активации
+        x = self.output(x)      # 4 нейрона → 1 выход
+        x = self.sigmoid(x)     # для вероятности 0-1
         return x
 
 def prepare_data(data):
@@ -40,9 +42,9 @@ def prepare_data(data):
 def trainSingleNeuron(x0_train_t, y0_train_t, x0_test_t, y0_test_t, activation, optimizer_name, epochs):
 
 
-    model = SingleNeuron(2, activation)
+    model = MultiLayerNet(2, activation=activation)
 
-    criterion = nn.BCEWithLogitsLoss()  # Бинарная кросс-энтропия
+    criterion = nn.BCEWithLogitsLoss()
 
     if optimizer_name == 'adam':
         optimizer = optim.Adam(model.parameters())
@@ -83,33 +85,21 @@ def set_seed(seed):
     
 set_seed(122)
 
-nn_0 = utility.importCSV('nn_0.csv', 1, delimiter=',')
 nn_1 = utility.importCSV('nn_1.csv', 1, delimiter=',')
 
-random.shuffle(nn_0)
 random.shuffle(nn_1)
 
-x0, y0 = prepare_data(nn_0)
 x1, y1 = prepare_data(nn_1)
 
-y0 = (y0 + 1) / 2
 y1 = (y1 + 1) / 2
 
 scaler = StandardScaler()
-x0_scaled = scaler.fit_transform(x0)
 x1_scaled = scaler.fit_transform(x1)
 
-x0_train, x0_test, y0_train, y0_test = train_test_split(
-    x0_scaled, y0, test_size=0.2, random_state=42
-)
 x1_train, x1_test, y1_train, y1_test = train_test_split(
     x1_scaled, y1, test_size=0.2, random_state=42
 )
 
-x0_train_t = torch.FloatTensor(x0_train)
-y0_train_t = torch.FloatTensor(y0_train).reshape(-1, 1)
-x0_test_t = torch.FloatTensor(x0_test)
-y0_test_t = torch.FloatTensor(y0_test).reshape(-1, 1)
 
 x1_train_t = torch.FloatTensor(x1_train)
 y1_train_t = torch.FloatTensor(y1_train).reshape(-1, 1)
@@ -123,37 +113,7 @@ plt.figure(figsize=(12, 6))
 color = 0
 for i in acts:
     for j in opts:
-        accs, losss, good, epochs = trainSingleNeuron(x0_train_t, y0_train_t, x0_test_t, y0_test_t, i, j, 1000)
-
-        print(f'{i} + {j} epoch, when accuracy becames 1.0: {good}')
-
-        plt.subplot(1, 2, 1)
-        plt.plot(epochs, accs, colors[color], linewidth=2, label=f'{i} + {j}')
-        plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        plt.grid(alpha=0.3)
-        plt.legend()
-
-        plt.subplot(1, 2, 2)
-        plt.plot(epochs, losss, colors[color], linewidth=2, label=f'{i} + {j}')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.grid(alpha=0.3)
-        plt.legend()
-        color += 1
-
-        
-plt.tight_layout()
-plt.subplots_adjust(top=0.9)
-plt.suptitle('nn_0')
-plt.savefig(f'nn_0')
-
-
-plt.figure(figsize=(12, 6))
-color = 0
-for i in acts:
-    for j in opts:
-        accs, losss, good, epochs = trainSingleNeuron(x1_train_t, y1_train_t, x1_test_t, y1_test_t, i, j, 1000)
+        accs, losss, good, epochs = trainSingleNeuron(x1_train_t, y1_train_t, x1_test_t, y1_test_t, i, j, 500)
 
         print(f'{i} + {j} epoch, when accuracy becames 1.0: {good}')
 
