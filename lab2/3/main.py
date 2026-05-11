@@ -45,7 +45,8 @@ class MNIST_CNN(nn.Module):
         x = self.dropout(self.relu3(self.fc1(x)))
         x = self.fc2(x)
         return x
-    
+
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = MNIST_CNN().to(device)
 criterion = nn.CrossEntropyLoss()
@@ -69,4 +70,61 @@ def train(epochs=5):
         acc = 100 * correct / len(train_dataset)
         print(f'Epoch {epoch+1}: Train Acc = {acc:.2f}%')
 
+
+def visualize_filters(model, layer_name='conv1', num_filters=32):
+    """
+    Визуализация фильтров сверточного слоя
+    
+    Args:
+        model: обученная модель CNN
+        layer_name: имя слоя ('conv1' или 'conv2')
+        num_filters: количество фильтров для отображения
+    """
+    # Получаем веса фильтров из указанного слоя
+    if layer_name == 'conv1':
+        filters = model.conv1.weight.data.cpu().numpy()
+    elif layer_name == 'conv2':
+        filters = model.conv2.weight.data.cpu().numpy()
+    else:
+        print(f"Слой {layer_name} не найден")
+        return
+    
+    # filters.shape = (out_channels, in_channels, height, width)
+    # conv1: (32, 1, 3, 3)
+    # conv2: (64, 32, 3, 3)
+    
+    # Определяем размер сетки для отображения
+    grid_size = int(np.ceil(np.sqrt(num_filters)))
+    
+    plt.figure(figsize=(12, 12))
+    
+    for i in range(min(num_filters, filters.shape[0])):
+        # Для conv1: один входной канал → берем filters[i, 0]
+        # Для conv2: 32 входных канала → усредняем их
+        if layer_name == 'conv1':
+            filter_weights = filters[i, 0]  # (3, 3)
+        else:  # conv2
+            filter_weights = filters[i].mean(axis=0)  # усредняем 32 канала → (3, 3)
+        
+        # Нормализуем значения в диапазон [0, 1] для отображения
+        min_val = filter_weights.min()
+        max_val = filter_weights.max()
+        if max_val - min_val > 1e-8:  # избегаем деления на ноль
+            filter_weights = (filter_weights - min_val) / (max_val - min_val)
+        else:
+            filter_weights = np.zeros_like(filter_weights)
+        
+        plt.subplot(grid_size, grid_size, i + 1)
+        plt.imshow(filter_weights, cmap='gray', interpolation='nearest')
+        plt.title(f'Filter {i+1}')
+        plt.axis('off')
+    
+    plt.suptitle(f'Визуализация фильтров слоя {layer_name}', fontsize=14)
+    plt.tight_layout()
+    plt.show()
+
+
 train()
+
+visualize_filters(model, 'conv1', 32)
+visualize_filters(model, 'conv2', 64)
