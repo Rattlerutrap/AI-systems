@@ -83,6 +83,35 @@ def set_seed(seed):
     
 set_seed(122)
 
+def plot_classes(X, y, title="Классы точек"):
+    """
+    Визуализация точек с цветовой маркировкой по классам
+    
+    Args:
+        X: np.array, признаки (N, 2)
+        y: np.array, метки классов (N,), значения -1 или 1
+        title: str, заголовок графика
+    """
+    plt.figure(figsize=(8, 6))
+    
+    # Разделяем точки по классам
+    class_minus1 = X[y == -1]
+    class_plus1 = X[y == 1]
+    
+    # Рисуем точки
+    plt.scatter(class_minus1[:, 0], class_minus1[:, 1], 
+                color='red', label='Класс -1', alpha=0.7, s=30)
+    plt.scatter(class_plus1[:, 0], class_plus1[:, 1], 
+                color='green', label='Класс 1', alpha=0.7, s=30)
+    
+    plt.xlabel('X1')
+    plt.ylabel('X2')
+    plt.title(title)
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.axis('equal')
+    plt.show()
+
 nn_0 = utility.importCSV('nn_0.csv', 1, delimiter=',')
 nn_1 = utility.importCSV('nn_1.csv', 1, delimiter=',')
 
@@ -91,6 +120,9 @@ random.shuffle(nn_1)
 
 x0, y0 = prepare_data(nn_0)
 x1, y1 = prepare_data(nn_1)
+
+plot_classes(x0, y0, 'nn_0')
+plot_classes(x1, y1, 'nn_1')
 
 y0 = (y0 + 1) / 2
 y1 = (y1 + 1) / 2
