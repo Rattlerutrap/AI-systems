@@ -25,7 +25,7 @@ def toNpArray(data):
     x = []
     for row in data:
         temp = []
-        for pos in row:
-            temp.append(float(data[row][pos]))
+        for el in row:
+            temp.append(float(el))
         x.append(temp)
     return np.array(x)
