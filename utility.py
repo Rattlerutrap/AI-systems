@@ -1,4 +1,5 @@
 import csv
+import numpy as np
 
 def importCSV(filename, linesTobeIgnored = 0, columnsToBeIgnored = 0, delimiter = ','):
     result = []
@@ -19,3 +20,12 @@ def importTxt(filename, linesTobeIgnored = 0, columnsToBeIgnored = 0, separator 
         for line in file:
             result.append(line.strip().split(separator)[columnsToBeIgnored:])
     return result
+
+def toNpArray(data):
+    x = []
+    for row in data:
+        temp = []
+        for el in row:
+            temp.append(float(el))
+        x.append(temp)
+    return np.array(x)
