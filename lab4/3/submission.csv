@@ -164,7 +164,7 @@ PassengerId,Survived
 1054,True
 1055,False
 1056,False
-1057,True
+1057,False
 1058,True
 1059,True
 1060,True
@@ -257,7 +257,7 @@ PassengerId,Survived
 1147,False
 1148,False
 1149,False
-1150,False
+1150,True
 1151,False
 1152,False
 1153,False
@@ -378,7 +378,7 @@ PassengerId,Survived
 1268,False
 1269,False
 1270,False
-1271,True
+1271,False
 1272,False
 1273,False
 1274,False
@@ -416,4 +416,4 @@ PassengerId,Survived
 1306,True
 1307,False
 1308,False
-1309,False
+1309,True
