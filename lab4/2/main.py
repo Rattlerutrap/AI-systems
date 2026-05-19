@@ -78,7 +78,7 @@ plt.grid(True, alpha=0.3)
 plt.legend(loc='best')
 plt.ylim([0.5, 1.0])
 plt.tight_layout()
-plt.savefig('1')
+plt.savefig('2')
 plt.show()
 
 # 6. Анализ результатов
