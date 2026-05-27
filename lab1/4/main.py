@@ -1,8 +1,5 @@
 import sys
-import os
-sys.path.append(r'F:\Системы ИИ')
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+sys.path.append(r'F:\6 семестр\Системы ИИ')
 import utility
 
 import numpy as np

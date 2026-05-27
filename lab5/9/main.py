@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 
 import sys
-sys.path.append(r'F:\Системы ИИ')
+sys.path.append(r'F:\6 семестр\Системы ИИ')
 import utility
 data = utility.importCSV('nsw74psid1.csv', 1, delimiter=',')
 

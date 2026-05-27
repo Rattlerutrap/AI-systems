@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.append(r'F:\Системы ИИ')
+sys.path.append(r'F:\6 семестр\Системы ИИ')
 import utility
 
 data1 = utility.importCSV('clustering_1.csv', delimiter='\t')
@@ -62,7 +62,7 @@ def makeThreeClusters(data, title='default'):
             n_clusters_aggl = i
             best_aggl = silhouette_score(data, aggl.labels_)
 
-    for i in range(0, 20):
+    for i in range(0, 200):
         dbscan = DBSCAN(eps=(0.1 + i * 0.01)).fit(data)
         if (len(set(dbscan.labels_)) < 2):
             continue
